@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+</head>
+<body>
+
+<div>
+    <form th:action="@{/editproduct}" method="post">
+        <p>Name: <textarea type="text" th:text="${product.getName()}" name="name"></textarea></p>
+        <p>Description: <textarea type="text" th:text="${product.getDescription()}" name="desc"></textarea></p>
+        <p>Price: <input type="number" th:value="${product.getPrice()}" step="0.01" name="price" ></p>
+        <input type="hidden"  th:value="${product.getName()}" name="old_product_name">
+        <p>
+            <select name="product_category">
+                <option th:each="category: ${categories}" th:value="${category}" th:text="${category}"></option>
+            </select>
+        </p>
+        <p><input type="submit" value="Save changes"/>
+    </form>
+</div>
+<div>
+    <form th:action="@{/delete}" method="post">
+        <p><input type="hidden" th:value="${product.getName()}" name="name" /></p>
+        <p><input type="submit" value="Delete"></p>
+    </form>
+</div>
+</body>
+</html>
