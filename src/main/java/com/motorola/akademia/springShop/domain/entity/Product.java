@@ -6,13 +6,15 @@ public class Product {
     private String name;
     private String description;
     private BigDecimal price;
+    private ProductCategory productCategory;
 
     public Product(){}
 
-    public Product(String name, String description, BigDecimal price) {
+    public Product(String name, String description, BigDecimal price, ProductCategory productCategory) {
         this.name = name;
         this.description = description;
         this.price = price;
+        this.productCategory = productCategory;
     }
 
     public String getName() {
@@ -39,10 +41,19 @@ public class Product {
         this.price = price;
     }
 
+    public ProductCategory getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(ProductCategory productCategory) {
+        this.productCategory = productCategory;
+    }
+
     public static final class ProductBuilder{
         private String name;
         private String description;
         private BigDecimal price;
+        private ProductCategory productCategory;
 
         public ProductBuilder name(String name) {
             this.name = name;
@@ -56,6 +67,10 @@ public class Product {
 
         public ProductBuilder price(BigDecimal price){
             this.price = price;
+            return this;
+        }
+        public ProductBuilder productCategory(ProductCategory productCategory){
+            this.productCategory = productCategory;
             return this;
         }
 
@@ -74,6 +89,7 @@ public class Product {
             product.name = this.name;
             product.description = this.description;
             product.price = this.price;
+            product.productCategory = this.productCategory;
 
             return product;
 
