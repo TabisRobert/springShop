@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id="container">
+    <div id="content">
+        <table>
+            <tr>
+                <th>Nazwa</th>
+                <th>Cena</th>
+                <th>Kategoria</th>
+                <th>Opcje</th>
+            </tr>
+            <tr th:each="product: ${products}">
+                <td th:text="*{product.getName()}"></td>
+                <td th:text="*{product.getPrice()}"></td>
+                <td th:text="*{product.getProductCategory()}"></td>
+                <td>
+                    <form th:action="@{/productedition}" method="post">
+                        <input type="hidden" name="product_name" th:value="${product.getName()}">
+                        <input type="submit" value="Opcje administratora">
+                    </form>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+
+</div>
+<div>
+    <form th:action="@{/addproduct}" method="post">
+        <p>Description: <input type="text" name="desc" placeholder="Product description"></p>
+        <p>Name: <input type="text" name="name" placeholder="Product name"></p>
+        <p>Price: <input type="number" step="0.01" name="price"></p>
+        <p>
+            <select name="product_category">
+                <option th:each="category: ${categories}" th:value="${category}" th:text="${category}"></option>
+            </select>
+        </p>
+        <p><input type="submit" value="Add product"/>
+    </form>
+</div>
+
+</body>
+</html>
