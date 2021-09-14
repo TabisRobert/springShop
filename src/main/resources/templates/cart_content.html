@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart content</title>
+</head>
+<body>
+
+<div id="container">
+    <div id="content">
+        <span th:if="${articles == null OR articles.isEmpty()}">
+            <div>There are no articles in your cart</div>
+        </span>
+        <span th:if="${articles != null AND !articles.isEmpty()}">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Total Price</th>
+                <th>Quantity</th>
+                <th>Options</th>
+            </tr>
+            <tr th:each="article: ${articles}">
+                <td th:text="*{article.getProduct().getName()}"></td>
+                <td th:text="*{article.getTotalPrice()}">$</td>
+                <td>
+                    <form th:action="@{/edit_quantity}" method="post">
+                        <input type="number" th:value="${article.getQuantity()}" name="article_quantity">
+                        <input type="hidden" th:value="${article.getProduct().getName()}" name="edited_article">
+                        <input type="submit" value="Change quantity">
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{/delete_article}" method="post">
+                        <input type="hidden" th:value="${article.getProduct().getName()}" name="deleted_article">
+                        <input type="submit" value="Delete article">
+                    </form>
+                </td>
+
+            </tr>
+        </table>
+        </span>
+    </div>
+
+</div>
+
+<a th:href="@{/home}">Home page</a>
+
+</body>
+</html>

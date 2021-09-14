@@ -7,7 +7,7 @@
 <body>
 
 <div>
-    <form th:action="@{/editproduct}" method="post">
+    <form th:action="@{/edit_product}" method="post">
         <p>Name: <textarea type="text" th:text="${product.getName()}" name="name"></textarea></p>
         <p>Description: <textarea type="text" th:text="${product.getDescription()}" name="desc"></textarea></p>
         <p>Price: <input type="number" th:value="${product.getPrice()}" step="0.01" name="price" ></p>
@@ -21,10 +21,13 @@
     </form>
 </div>
 <div>
-    <form th:action="@{/delete}" method="post">
+    <form th:action="@{/delete_product}" method="post">
         <p><input type="hidden" th:value="${product.getName()}" name="name" /></p>
         <p><input type="submit" value="Delete"></p>
     </form>
 </div>
+
+<a th:href="@{/admin}">Administrator View</a>
+<a th:href="@{/home}">Home page</a>
 </body>
 </html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form th:action="@{/list_of_products}" method="post">
+    <p>
+        <select name="product_category">
+            <option th:each="category: ${categories}" th:value="${category}" th:text="${category}"></option>
+        </select>
+    </p>
+    <span th:if="${products != null}">
+        <div>
+            <div id="content">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Options</th>
+                    </tr>
+                    <tr th:each="product: ${products}">
+                        <td th:text="*{product.getName()}"></td>
+                        <td th:text="*{product.getPrice()}"></td>
+                        <td th:text="*{product.getProductCategory()}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </span>
+    <span th:if="${products == null}">
+        <div>To view the list of products, select a category and click "Submit"</div>
+    </span>
+    <span th:if="${products != null AND products.isEmpty()}">
+        <div>There are no products in this category</div>
+    </span>
+    <p><input type="submit" value="Submit"/>
+</form>
+
+<a th:href="@{/home}">Home page</a>
+
+</body>
+</html>

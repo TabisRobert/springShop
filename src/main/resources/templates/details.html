@@ -7,9 +7,13 @@
 <body>
 
 <table>
-    <tr th:text="${product.getDescription()}"></tr>
+    <span th:if="${product != null}">
+            <tr th:text="${product.getDescription()}"></tr>
+    </span>
 
 </table>
+
+<a th:href="@{/home}">Home page</a>
 
 </body>
 </html>
