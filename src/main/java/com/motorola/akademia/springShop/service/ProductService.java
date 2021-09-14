@@ -35,7 +35,8 @@ public class ProductService {
         productRepository.deleteProduct(productName);
     }
 
-    public ProductCategory[] getAllCategories() {
-        return productRepository.getArrayOfCategories();
+
+    public List<Product> getAllProductsFromCategory(ProductCategory productCategory) {
+        return productRepository.getProductsByCategory(productCategory);
     }
 }

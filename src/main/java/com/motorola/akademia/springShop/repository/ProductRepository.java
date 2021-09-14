@@ -13,9 +13,10 @@ import java.util.List;
 @Repository
 public class ProductRepository {
     private ArrayList<Product> products = new ArrayList<>(){{
-        add(new Product("Mydło", "Pieniące", new BigDecimal("25.00"),ProductCategory.COSMETICS));
+        add(new Product("Mydło", "Pieniące", new BigDecimal("25.00"),ProductCategory.CLEANING_SUPPLIES));
         add(new Product("Masło", "Się roztrzasło", new BigDecimal("99.99"), ProductCategory.FOOD));
         add(new Product("Chleb", "Razowy", new BigDecimal("5.50"), ProductCategory.FOOD));
+        add(new Product("Krem", "Do czego tylko zechcesz ", new BigDecimal("15.99"), ProductCategory.COSMETICS));
     }};
 
     public List<Product> all() {
@@ -52,7 +53,7 @@ public class ProductRepository {
         }
     }
 
-    private BigDecimal getRoundedBigDecimalFromGivenNumber(double price) {
+    BigDecimal getRoundedBigDecimalFromGivenNumber(double price) {
         BigDecimal productPrice = new BigDecimal(price, MathContext.DECIMAL64);
         productPrice = productPrice.setScale(2, RoundingMode.HALF_UP);
         return productPrice;
@@ -62,7 +63,18 @@ public class ProductRepository {
         products.remove(byName(productName));
     }
 
-    public ProductCategory[] getArrayOfCategories() {
-        return ProductCategory.values();
+
+    public List<Product> getProductsByCategory(ProductCategory productCategory) {
+        List<Product> categorizedProducts = new ArrayList<>();
+        for (Product product : products) {
+            if (product.getProductCategory()==productCategory){
+                categorizedProducts.add(product);
+            }
+        }
+        return categorizedProducts;
+    }
+
+    public BigDecimal getProductPrice(Product product) {
+        return product.getPrice();
     }
 }
