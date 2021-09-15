@@ -16,7 +16,7 @@ public class ProductRepository {
         add(new Product("Mydło", "Pieniące", new BigDecimal("25.00"),ProductCategory.CLEANING_SUPPLIES));
         add(new Product("Masło", "Się roztrzasło", new BigDecimal("99.99"), ProductCategory.FOOD));
         add(new Product("Chleb", "Razowy", new BigDecimal("5.50"), ProductCategory.FOOD));
-        add(new Product("Krem", "Do czego tylko zechcesz ", new BigDecimal("15.99"), ProductCategory.COSMETICS));
+        add(new Product("Krem", "Do czego tylko zechcesz ", new BigDecimal("10.00"), ProductCategory.COSMETICS));
     }};
 
     public List<Product> all() {

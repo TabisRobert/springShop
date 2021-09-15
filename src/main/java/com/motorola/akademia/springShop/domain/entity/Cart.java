@@ -7,6 +7,7 @@ public class Cart {
     private final ArrayList<Article> articles;
     private boolean isSpecialOfferApplied = false;
     private BigDecimal totalCartValue;
+    private SpecialOffer specialOffer;
 
     public Cart(ArrayList<Article> articles) {
         this.articles = articles;
@@ -30,6 +31,14 @@ public class Cart {
 
     public void setTotalCartValue(BigDecimal totalCartValue) {
         this.totalCartValue = totalCartValue;
+    }
+
+    public SpecialOffer getSpecialOffer() {
+        return specialOffer;
+    }
+
+    public void setSpecialOffer(SpecialOffer specialOffer) {
+        this.specialOffer = specialOffer;
     }
 
     public static class Article{

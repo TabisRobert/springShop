@@ -3,12 +3,11 @@ package com.motorola.akademia.springShop.repository;
 import com.motorola.akademia.springShop.domain.entity.Cart;
 import com.motorola.akademia.springShop.domain.entity.Product;
 import com.motorola.akademia.springShop.domain.entity.ProductCategory;
-import com.motorola.akademia.springShop.service.CategoryService;
+import com.motorola.akademia.springShop.domain.entity.SpecialOffer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -49,13 +48,14 @@ public class CartRepository {
         }
     }
 
+
     public ArrayList<Cart.Article> articles(Cart cart) {
         return cart.getArticles();
     }
 
     public void editQuantityOfGivenArticle(Cart cart, String articleName, double newQuantity) {
         Cart.Article article = byName(cart, articleName);
-        if (newQuantity==0){
+        if (newQuantity == 0) {
             deleteArticleFromCart(cart, article);
         }
         article.setQuantity(getBigDecimal(newQuantity));
@@ -77,8 +77,9 @@ public class CartRepository {
         return null;
     }
 
-    public void deleteArticleFromCart(Cart cart, Cart.Article article){
+    public void deleteArticleFromCart(Cart cart, Cart.Article article) {
         cart.getArticles().remove(article);
+        checkIfSpecialOffersAreAvaialable(cart);
         updateCartTotalValue(cart);
     }
 
@@ -86,74 +87,88 @@ public class CartRepository {
         cart.setTotalCartValue(calculateTotalPriceOfProductsInCart(cart));
     }
 
-    public BigDecimal calculateTotalPriceOfProductsInCart(Cart cart){
+    private BigDecimal calculateTotalPriceOfProductsInCart(Cart cart) {
         BigDecimal sum = new BigDecimal(0);
-        if (cart.getArticles().isEmpty()){
+        if (cart.getArticles().isEmpty()) {
             cart.setSpecialOfferApplied(false);
             return sum;
         }
-        for (Cart.Article article: cart.getArticles()) {
+        for (Cart.Article article : cart.getArticles()) {
             sum = sum.add(article.getTotalPrice());
         }
         return sum;
     }
 
-    public void checkIfSpecialOffersAreAvaialable(Cart cart){
-        if (!cart.isSpecialOfferApplied()){
-            discountForThreeFoodArticles(cart);
+    private void checkIfSpecialOffersAreAvaialable(Cart cart) {
+        if (!cart.isSpecialOfferApplied() || cart.getSpecialOffer()==SpecialOffer.TEN_FOODS_DISCOUNT) {
+            discountForTenFoodArticles(cart);
         }
-        if (!cart.isSpecialOfferApplied()){
+        if (!cart.isSpecialOfferApplied() || cart.getSpecialOffer()==SpecialOffer.EACH_CATEGORY_DISCOUNT) {
             discountForProductsDiversity(cart);
         }
-        if (!cart.isSpecialOfferApplied()){
+        if (!cart.isSpecialOfferApplied() || cart.getSpecialOffer()==SpecialOffer.ONE_FOR_FREE) {
             oneCosmeticIsFreee(cart);
         }
     }
 
-    private void discountForThreeFoodArticles(Cart cart) {
+    private void discountForTenFoodArticles(Cart cart) {
         int foodProductsQuantity = 0;
         BigDecimal discount = productRepository.getRoundedBigDecimalFromGivenNumber(0.95);
-        for (Cart.Article article: cart.getArticles()){
-            if (article.getProduct().getProductCategory()== ProductCategory.FOOD){
+        for (Cart.Article article : cart.getArticles()) {
+            if (article.getProduct().getProductCategory() == ProductCategory.FOOD) {
                 foodProductsQuantity += article.getQuantity().intValue();
             }
         }
-        if (foodProductsQuantity>=10){
+        if (foodProductsQuantity >= 10) {
             applyDiscount(cart, discount);
+            cart.setSpecialOffer(SpecialOffer.TEN_FOODS_DISCOUNT);
+            cart.setSpecialOfferApplied(true);
+        } else {
+            cart.setSpecialOfferApplied(false);
         }
     }
 
     private void applyDiscount(Cart cart, BigDecimal discount) {
-        for (Cart.Article article: cart.getArticles()){
-            article.setTotalPrice(article.getTotalPrice().multiply(discount));
+        for (Cart.Article article : cart.getArticles()) {
+            article.setTotalPrice(article.getProduct().getPrice().multiply(article.getQuantity()).multiply(discount));
         }
         updateCartTotalValue(cart);
-        cart.setSpecialOfferApplied(true);
     }
 
     private void discountForProductsDiversity(Cart cart) {
         BigDecimal discount = productRepository.getRoundedBigDecimalFromGivenNumber(0.97);
         List<ProductCategory> categoriesInCart = new ArrayList<>();
-        for (Cart.Article article: cart.getArticles()) {
+        for (Cart.Article article : cart.getArticles()) {
             categoriesInCart.add(article.getProduct().getProductCategory());
         }
-        if(categoriesInCart.containsAll(Arrays.asList(categoryRepository.getArrayOfCategories()))){
+        if (categoriesInCart.containsAll(Arrays.asList(categoryRepository.getArrayOfCategories()))) {
             applyDiscount(cart, discount);
+            cart.setSpecialOffer(SpecialOffer.EACH_CATEGORY_DISCOUNT);
+            cart.setSpecialOfferApplied(true);
         }
+        if (!categoriesInCart.containsAll(Arrays.asList(categoryRepository.getArrayOfCategories()))){
+            applyDiscount(cart, BigDecimal.ONE);
+            cart.setSpecialOfferApplied(false);
+        }
+
     }
 
     private void oneCosmeticIsFreee(Cart cart) {
-        boolean specialOfferApplied = false;
-        for (Cart.Article article: cart.getArticles()) {
-            if (article.getProduct().getProductCategory()== ProductCategory.COSMETICS && article.getQuantity().intValue()>=3){
+        boolean newOffer = false;
+        for (Cart.Article article : cart.getArticles()) {
+            if (article.getProduct().getProductCategory() == ProductCategory.COSMETICS && article.getQuantity().intValue() >= 3) {
                 article.setTotalPrice(article.getTotalPrice().subtract(article.getProduct().getPrice()));
-                specialOfferApplied = true;
+                newOffer = true;
             }
         }
-        if (specialOfferApplied){
+        if (newOffer) {
             updateCartTotalValue(cart);
             cart.setSpecialOfferApplied(true);
+            cart.setSpecialOffer(SpecialOffer.ONE_FOR_FREE);
+        } else {
+            cart.setSpecialOfferApplied(false);
         }
     }
 
 }
+
