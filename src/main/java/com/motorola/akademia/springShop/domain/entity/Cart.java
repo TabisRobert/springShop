@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 public class Cart {
     private final ArrayList<Article> articles;
+    private boolean isSpecialOfferApplied = false;
+    private BigDecimal totalCartValue;
 
     public Cart(ArrayList<Article> articles) {
         this.articles = articles;
@@ -14,6 +16,21 @@ public class Cart {
         return articles;
     }
 
+    public boolean isSpecialOfferApplied() {
+        return isSpecialOfferApplied;
+    }
+
+    public void setSpecialOfferApplied(boolean specialOfferApplied) {
+        isSpecialOfferApplied = specialOfferApplied;
+    }
+
+    public BigDecimal getTotalCartValue() {
+        return totalCartValue;
+    }
+
+    public void setTotalCartValue(BigDecimal totalCartValue) {
+        this.totalCartValue = totalCartValue;
+    }
 
     public static class Article{
         private final Product product;

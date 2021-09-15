@@ -36,8 +36,10 @@ public class CartController {
     public String getCartContent(Model model, HttpServletRequest request) {
         HttpSession session = getHttpSession(request);
         if (session.getAttribute("existing_cart") != null) {
-            ArrayList<Cart.Article> articlesList = cartService.getAllArticlesFromCart((Cart) session.getAttribute("existing_cart"));
+            Cart cart = (Cart) session.getAttribute("existing_cart");
+            ArrayList<Cart.Article> articlesList = cartService.getAllArticlesFromCart(cart);
             model.addAttribute("articles", articlesList);
+            model.addAttribute("cart", cart);
         } else {
             model.addAttribute("articles", null);
         }

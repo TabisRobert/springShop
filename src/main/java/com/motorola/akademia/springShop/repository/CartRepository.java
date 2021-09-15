@@ -2,17 +2,25 @@ package com.motorola.akademia.springShop.repository;
 
 import com.motorola.akademia.springShop.domain.entity.Cart;
 import com.motorola.akademia.springShop.domain.entity.Product;
+import com.motorola.akademia.springShop.domain.entity.ProductCategory;
+import com.motorola.akademia.springShop.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Repository
 public class CartRepository {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     public Cart createCart() {
         ArrayList<Cart.Article> articles = new ArrayList<>();
@@ -30,10 +38,14 @@ public class CartRepository {
     public void putArticleIntoCart(Cart cart, String name, double quantity) {
         if (byName(cart, name) == null) {
             cart.getArticles().add(createArticle(name, quantity));
+            updateCartTotalValue(cart);
+            checkIfSpecialOffersAreAvaialable(cart);
         } else {
             BigDecimal newQuantity = getBigDecimal(quantity).add(byName(cart, name).getQuantity());
             byName(cart, name).setQuantity(newQuantity);
             byName(cart, name).setTotalPrice(productRepository.byName(name).getPrice().multiply(newQuantity));
+            updateCartTotalValue(cart);
+            checkIfSpecialOffersAreAvaialable(cart);
         }
     }
 
@@ -46,9 +58,10 @@ public class CartRepository {
         if (newQuantity==0){
             deleteArticleFromCart(cart, article);
         }
-
         article.setQuantity(getBigDecimal(newQuantity));
         article.setTotalPrice(article.getProduct().getPrice().multiply(article.getQuantity()));
+        updateCartTotalValue(cart);
+        checkIfSpecialOffersAreAvaialable(cart);
     }
 
     private BigDecimal getBigDecimal(double value) {
@@ -66,5 +79,81 @@ public class CartRepository {
 
     public void deleteArticleFromCart(Cart cart, Cart.Article article){
         cart.getArticles().remove(article);
+        updateCartTotalValue(cart);
     }
+
+    private void updateCartTotalValue(Cart cart) {
+        cart.setTotalCartValue(calculateTotalPriceOfProductsInCart(cart));
+    }
+
+    public BigDecimal calculateTotalPriceOfProductsInCart(Cart cart){
+        BigDecimal sum = new BigDecimal(0);
+        if (cart.getArticles().isEmpty()){
+            cart.setSpecialOfferApplied(false);
+            return sum;
+        }
+        for (Cart.Article article: cart.getArticles()) {
+            sum = sum.add(article.getTotalPrice());
+        }
+        return sum;
+    }
+
+    public void checkIfSpecialOffersAreAvaialable(Cart cart){
+        if (!cart.isSpecialOfferApplied()){
+            discountForThreeFoodArticles(cart);
+        }
+        if (!cart.isSpecialOfferApplied()){
+            discountForProductsDiversity(cart);
+        }
+        if (!cart.isSpecialOfferApplied()){
+            oneCosmeticIsFreee(cart);
+        }
+    }
+
+    private void discountForThreeFoodArticles(Cart cart) {
+        int foodProductsQuantity = 0;
+        BigDecimal discount = productRepository.getRoundedBigDecimalFromGivenNumber(0.95);
+        for (Cart.Article article: cart.getArticles()){
+            if (article.getProduct().getProductCategory()== ProductCategory.FOOD){
+                foodProductsQuantity += article.getQuantity().intValue();
+            }
+        }
+        if (foodProductsQuantity>=10){
+            applyDiscount(cart, discount);
+        }
+    }
+
+    private void applyDiscount(Cart cart, BigDecimal discount) {
+        for (Cart.Article article: cart.getArticles()){
+            article.setTotalPrice(article.getTotalPrice().multiply(discount));
+        }
+        updateCartTotalValue(cart);
+        cart.setSpecialOfferApplied(true);
+    }
+
+    private void discountForProductsDiversity(Cart cart) {
+        BigDecimal discount = productRepository.getRoundedBigDecimalFromGivenNumber(0.97);
+        List<ProductCategory> categoriesInCart = new ArrayList<>();
+        for (Cart.Article article: cart.getArticles()) {
+            categoriesInCart.add(article.getProduct().getProductCategory());
+        }
+        if(categoriesInCart.containsAll(Arrays.asList(categoryRepository.getArrayOfCategories()))){
+            applyDiscount(cart, discount);
+        }
+    }
+
+    private void oneCosmeticIsFreee(Cart cart) {
+        boolean specialOfferApplied = false;
+        for (Cart.Article article: cart.getArticles()) {
+            if (article.getProduct().getProductCategory()== ProductCategory.COSMETICS && article.getQuantity().intValue()>=3){
+                article.setTotalPrice(article.getTotalPrice().subtract(article.getProduct().getPrice()));
+                specialOfferApplied = true;
+            }
+        }
+        if (specialOfferApplied){
+            updateCartTotalValue(cart);
+            cart.setSpecialOfferApplied(true);
+        }
+    }
+
 }
