@@ -17,7 +17,7 @@ public class Order {
         return orderId;
     }
 
-    public ArrayList<Cart.Article> getProducts() {
+    public ArrayList<Cart.Article> getArticles() {
         return products;
     }
 

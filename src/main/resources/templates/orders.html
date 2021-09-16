@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+</head>
+<body>
+
+<table>
+    <span th:if="${orders == null OR orders.isEmpty()}">
+        <div>There are no articles in your cart</div>
+    </span>
+    <span th:if="${orders != null AND !orders.isEmpty()}">
+        <span th:each="order: ${orders}">
+            <p th:text="'Order ID = ' + ${order.getOrderId() + ' Total value = ' + ${order.getOrderValue)}"></p>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                </tr>
+                <tr th:each="article: ${order.getArticles()}">
+                    <td th:text="*{article.getProduct().getName()}"></td>
+                    <td th:number="*{article.getQuantity()}"></td>
+                    <td th:text="*{article.getTotalPrice()}">$</td>
+                </tr>
+            </table>
+                <form th:action="@{/delete_order}" method="post">
+                    <input type="hidden" th:value="${order.getOrderId()}" name="deleted_order">
+                    <input type="submit" value="Delete order">
+                </form>
+        </span>
+    </span>
+
+</table>
+
+<a th:href="@{/home}">Home page</a>
+
+</body>
+</html>
