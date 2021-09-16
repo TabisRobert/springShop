@@ -78,9 +78,13 @@ public class CartRepository {
     }
 
     public void deleteArticleFromCart(Cart cart, Cart.Article article) {
-        cart.getArticles().remove(article);
+        removeArticle(cart, article);
         checkIfSpecialOffersAreAvaialable(cart);
         updateCartTotalValue(cart);
+    }
+
+    private void removeArticle(Cart cart, Cart.Article article) {
+        cart.getArticles().remove(article);
     }
 
     private void updateCartTotalValue(Cart cart) {
@@ -100,13 +104,13 @@ public class CartRepository {
     }
 
     private void checkIfSpecialOffersAreAvaialable(Cart cart) {
-        if (!cart.isSpecialOfferApplied() || cart.getSpecialOffer()==SpecialOffer.TEN_FOODS_DISCOUNT) {
+        if (!cart.isSpecialOfferApplied() || cart.getSpecialOffer() == SpecialOffer.TEN_FOODS_DISCOUNT) {
             discountForTenFoodArticles(cart);
         }
-        if (!cart.isSpecialOfferApplied() || cart.getSpecialOffer()==SpecialOffer.EACH_CATEGORY_DISCOUNT) {
+        if (!cart.isSpecialOfferApplied() || cart.getSpecialOffer() == SpecialOffer.EACH_CATEGORY_DISCOUNT) {
             discountForProductsDiversity(cart);
         }
-        if (!cart.isSpecialOfferApplied() || cart.getSpecialOffer()==SpecialOffer.ONE_FOR_FREE) {
+        if (!cart.isSpecialOfferApplied() || cart.getSpecialOffer() == SpecialOffer.ONE_FOR_FREE) {
             oneCosmeticIsFreee(cart);
         }
     }
@@ -146,7 +150,7 @@ public class CartRepository {
             cart.setSpecialOffer(SpecialOffer.EACH_CATEGORY_DISCOUNT);
             cart.setSpecialOfferApplied(true);
         }
-        if (!categoriesInCart.containsAll(Arrays.asList(categoryRepository.getArrayOfCategories()))){
+        if (!categoriesInCart.containsAll(Arrays.asList(categoryRepository.getArrayOfCategories()))) {
             applyDiscount(cart, BigDecimal.ONE);
             cart.setSpecialOfferApplied(false);
         }
@@ -170,5 +174,13 @@ public class CartRepository {
         }
     }
 
+    void emptyCart(Cart cart) {
+        for (Cart.Article article : cart.getArticles()) {
+            removeArticle(cart, article);
+        }
+        cart.setSpecialOfferApplied(false);
+        cart.setSpecialOffer(null);
+        cart.setTotalCartValue(BigDecimal.ZERO);
+    }
 }
 

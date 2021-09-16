@@ -13,6 +13,8 @@ public class Cart {
         this.articles = articles;
     }
 
+
+
     public ArrayList<Article> getArticles() {
         return articles;
     }

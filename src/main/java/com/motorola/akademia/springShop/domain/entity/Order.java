@@ -1,21 +1,31 @@
 package com.motorola.akademia.springShop.domain.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class Order {
-    private final String orderId;
-    private final ArrayList<Product> products;
+    private final Integer orderId;
+    private final ArrayList<Cart.Article> products;
+    private BigDecimal orderValue;
 
-    public Order(String orderId, ArrayList<Product> products) {
+    public Order(Integer orderId, ArrayList<Cart.Article> products) {
         this.orderId = orderId;
         this.products = products;
     }
 
-    public String getOrderId() {
+    public Integer getOrderId() {
         return orderId;
     }
 
-    public ArrayList<Product> getProducts() {
+    public ArrayList<Cart.Article> getProducts() {
         return products;
+    }
+
+    public BigDecimal getOrderValue() {
+        return orderValue;
+    }
+
+    public void setOrderValue(BigDecimal orderValue) {
+        this.orderValue = orderValue;
     }
 }
