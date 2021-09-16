@@ -24,6 +24,10 @@ public class OrderRepository {
         cartRepository.emptyCart(cart);
     }
 
+    public ArrayList<Order> getListOfOrders(){
+        return listOfOrders;
+    }
+
     public void deleteOrder(Integer id) {
         listOfOrders.remove(getOrderById(id));
     }
