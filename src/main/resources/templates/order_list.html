@@ -8,11 +8,11 @@
 
 <table>
     <span th:if="${orders == null OR orders.isEmpty()}">
-        <div>There are no articles in your cart</div>
+        <div>There are no orders</div>
     </span>
     <span th:if="${orders != null AND !orders.isEmpty()}">
         <span th:each="order: ${orders}">
-            <p th:text="'Order ID = ' + ${order.getOrderId() + ' Total value = ' + ${order.getOrderValue)}"></p>
+            <p th:text="'Order ID = ' + ${order.getOrderId()} + ' Total value = ' + ${order.getOrderValue()}"></p>
             <table>
                 <tr>
                     <th>Name</th>

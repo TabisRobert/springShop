@@ -175,9 +175,7 @@ public class CartRepository {
     }
 
     void emptyCart(Cart cart) {
-        for (Cart.Article article : cart.getArticles()) {
-            removeArticle(cart, article);
-        }
+        cart.getArticles().clear();
         cart.setSpecialOfferApplied(false);
         cart.setSpecialOffer(null);
         cart.setTotalCartValue(BigDecimal.ZERO);
