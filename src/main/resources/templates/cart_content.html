@@ -44,7 +44,7 @@
                 </span>
                 <p th:text="'Total Value = ' + ${cart.getTotalCartValue() + ' $'}"></p>
                 <form th:action="@{/create_order}" method="post">
-                    <input type="hidden" th:value="${cart}" name="new_order">
+<!--                    <input type="hidden" th:value="${cart}" name="new_order">-->
                     <input type="submit" value="Create order">
                 </form>
             </div>
