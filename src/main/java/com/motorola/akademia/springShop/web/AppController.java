@@ -10,4 +10,9 @@ public class AppController {
     public String openHomePage(){
         return "home_page";
     }
+
+    @GetMapping("/special_offers")
+    public String showSpecialOffers(){
+        return "spec_offers";
+    }
 }
