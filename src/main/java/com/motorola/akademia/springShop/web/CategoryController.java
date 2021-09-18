@@ -1,11 +1,10 @@
 package com.motorola.akademia.springShop.web;
 
 import com.motorola.akademia.springShop.domain.entity.Product;
-import com.motorola.akademia.springShop.domain.entity.ProductCategory;
+import com.motorola.akademia.springShop.domain.enums.ProductCategory;
 import com.motorola.akademia.springShop.service.CategoryService;
 import com.motorola.akademia.springShop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

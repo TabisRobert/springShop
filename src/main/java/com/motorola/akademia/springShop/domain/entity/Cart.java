@@ -1,5 +1,7 @@
 package com.motorola.akademia.springShop.domain.entity;
 
+import com.motorola.akademia.springShop.domain.enums.SpecialOffer;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 

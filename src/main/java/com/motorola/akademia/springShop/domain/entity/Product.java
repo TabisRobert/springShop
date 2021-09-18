@@ -1,5 +1,7 @@
 package com.motorola.akademia.springShop.domain.entity;
 
+import com.motorola.akademia.springShop.domain.enums.ProductCategory;
+
 import java.math.BigDecimal;
 
 public class Product {

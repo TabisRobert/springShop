@@ -1,7 +1,7 @@
 package com.motorola.akademia.springShop.repository;
 
 import com.motorola.akademia.springShop.domain.entity.Product;
-import com.motorola.akademia.springShop.domain.entity.ProductCategory;
+import com.motorola.akademia.springShop.domain.enums.ProductCategory;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;

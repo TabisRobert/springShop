@@ -2,8 +2,8 @@ package com.motorola.akademia.springShop.repository;
 
 import com.motorola.akademia.springShop.domain.entity.Cart;
 import com.motorola.akademia.springShop.domain.entity.Product;
-import com.motorola.akademia.springShop.domain.entity.ProductCategory;
-import com.motorola.akademia.springShop.domain.entity.SpecialOffer;
+import com.motorola.akademia.springShop.domain.enums.ProductCategory;
+import com.motorola.akademia.springShop.domain.enums.SpecialOffer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.motorola.akademia.springShop.domain.entity;
+package com.motorola.akademia.springShop.domain.enums;
 
 public enum SpecialOffer {
     ONE_FOR_FREE,
