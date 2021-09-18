@@ -16,7 +16,6 @@ public class Cart {
     }
 
 
-
     public ArrayList<Article> getArticles() {
         return articles;
     }
@@ -45,7 +44,7 @@ public class Cart {
         this.specialOffer = specialOffer;
     }
 
-    public static class Article{
+    public static class Article {
         private final Product product;
         private BigDecimal quantity;
         private BigDecimal totalPrice;

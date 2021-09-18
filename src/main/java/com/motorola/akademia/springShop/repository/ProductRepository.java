@@ -12,11 +12,11 @@ import java.util.List;
 
 @Repository
 public class ProductRepository {
-    private ArrayList<Product> products = new ArrayList<>(){{
-        add(new Product("Mydło", "Pieniące", new BigDecimal("25.00"),ProductCategory.CLEANING_SUPPLIES));
+    private ArrayList<Product> products = new ArrayList<>() {{
+        add(new Product("Mydło", "Pieniące", new BigDecimal("25.00"), ProductCategory.CLEANING_SUPPLIES));
         add(new Product("Masło", "Się roztrzasło", new BigDecimal("99.99"), ProductCategory.FOOD));
         add(new Product("Chleb", "Razowy", new BigDecimal("5.50"), ProductCategory.FOOD));
-        add(new Product("Krem", "Do czego tylko zechcesz ", new BigDecimal("10.00"), ProductCategory.COSMETICS));
+        add(new Product("Krem", "Do rąk", new BigDecimal("10.00"), ProductCategory.COSMETICS));
     }};
 
     public List<Product> all() {
@@ -32,7 +32,7 @@ public class ProductRepository {
         return null;
     }
 
-    public void addNewProduct(String name, String description, double price, ProductCategory productCategory){
+    public void addNewProduct(String name, String description, double price, ProductCategory productCategory) {
         Product product = new Product.ProductBuilder()
                 .name(name)
                 .description(description)
@@ -67,7 +67,7 @@ public class ProductRepository {
     public List<Product> getProductsByCategory(ProductCategory productCategory) {
         List<Product> categorizedProducts = new ArrayList<>();
         for (Product product : products) {
-            if (product.getProductCategory()==productCategory){
+            if (product.getProductCategory() == productCategory) {
                 categorizedProducts.add(product);
             }
         }

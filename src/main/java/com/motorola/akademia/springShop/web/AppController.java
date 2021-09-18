@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AppController {
 
     @GetMapping("/home")
-    public String openHomePage(){
+    public String openHomePage() {
         return "home_page";
     }
 
     @GetMapping("/special_offers")
-    public String showSpecialOffers(){
+    public String showSpecialOffers() {
         return "spec_offers";
     }
 }

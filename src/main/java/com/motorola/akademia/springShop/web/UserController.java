@@ -21,7 +21,7 @@ public class UserController {
     private CategoryService categoryService;
 
     @GetMapping("/user")
-    public String getAllProducts(Model model){
+    public String getAllProducts(Model model) {
         List<Product> productList = productService.showAllProducts();
         ProductCategory[] categories = categoryService.getAllCategories();
         model.addAttribute("products", productList);

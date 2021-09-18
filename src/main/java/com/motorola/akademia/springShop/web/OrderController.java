@@ -21,23 +21,24 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping("/show_orders")
-    public String showOrders(Model model){
+    public String showOrders(Model model) {
         ArrayList<Order> listOfOrders = orderService.getAllOrders();
         model.addAttribute("orders", listOfOrders);
         return "order_list";
     }
 
     @PostMapping("/create_order")
-    public String createNewOrder(HttpServletRequest request){
+    public String createNewOrder(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        if (session.getAttribute("existing_cart") != null){
+        if (session.getAttribute("existing_cart") != null) {
             Cart cart = (Cart) session.getAttribute("existing_cart");
             orderService.createOrderFromCart(cart);
         }
         return "redirect:/cart_content";
     }
+
     @PostMapping("/delete_order")
-    public String deleteOrderById(@RequestParam("deleted_order") Integer id){
+    public String deleteOrderById(@RequestParam("deleted_order") Integer id) {
         orderService.deleteOrderByGivenId(id);
         return "redirect:/show_orders";
     }

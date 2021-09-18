@@ -10,7 +10,8 @@ public class Product {
     private BigDecimal price;
     private ProductCategory productCategory;
 
-    public Product(){}
+    public Product() {
+    }
 
     public Product(String name, String description, BigDecimal price, ProductCategory productCategory) {
         this.name = name;
@@ -51,7 +52,7 @@ public class Product {
         this.productCategory = productCategory;
     }
 
-    public static final class ProductBuilder{
+    public static final class ProductBuilder {
         private String name;
         private String description;
         private BigDecimal price;
@@ -67,23 +68,24 @@ public class Product {
             return this;
         }
 
-        public ProductBuilder price(BigDecimal price){
+        public ProductBuilder price(BigDecimal price) {
             this.price = price;
             return this;
         }
-        public ProductBuilder productCategory(ProductCategory productCategory){
+
+        public ProductBuilder productCategory(ProductCategory productCategory) {
             this.productCategory = productCategory;
             return this;
         }
 
         public Product build() {
-            if(name.isEmpty()){
+            if (name.isEmpty()) {
                 throw new IllegalStateException("Name cannot be empty");
             }
-            if(description.isEmpty()){
+            if (description.isEmpty()) {
                 throw new IllegalStateException("Description cannot be empty");
             }
-            if(price == null){
+            if (price == null) {
                 throw new IllegalStateException("Price cannot be empty");
             }
 

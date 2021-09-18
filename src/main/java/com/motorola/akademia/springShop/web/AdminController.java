@@ -23,7 +23,7 @@ public class AdminController {
     private CategoryService categoryService;
 
     @GetMapping("/admin")
-    public String openAdministratorView(Model model){
+    public String openAdministratorView(Model model) {
         List<Product> productList = productService.showAllProducts();
         ProductCategory[] categories = categoryService.getAllCategories();
         model.addAttribute("products", productList);
@@ -32,7 +32,7 @@ public class AdminController {
     }
 
     @PostMapping("/product_edition")
-    public String openProductEditor(@RequestParam("product_name") String name, Model model){
+    public String openProductEditor(@RequestParam("product_name") String name, Model model) {
         Product product = productService.showProductDetails(name);
         ProductCategory[] categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);

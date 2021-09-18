@@ -23,7 +23,7 @@ public class ProductService {
         return productRepository.all();
     }
 
-    public void createNewProduct(String name, String description, double price, ProductCategory productCategory){
+    public void createNewProduct(String name, String description, double price, ProductCategory productCategory) {
         productRepository.addNewProduct(name, description, price, productCategory);
     }
 

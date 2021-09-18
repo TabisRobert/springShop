@@ -24,7 +24,7 @@ public class OrderRepository {
         cartRepository.emptyCart(cart);
     }
 
-    public ArrayList<Order> getListOfOrders(){
+    public ArrayList<Order> getListOfOrders() {
         return listOfOrders;
     }
 

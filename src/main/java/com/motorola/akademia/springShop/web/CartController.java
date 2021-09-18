@@ -50,14 +50,14 @@ public class CartController {
     @PostMapping("/edit_quantity")
     public String editQuantityOfGivenArticle(@RequestParam("article_quantity") double newQuantity, @RequestParam("edited_article") String name, HttpServletRequest request) {
         HttpSession session = getHttpSession(request);
-        cartService.editQuantityOfArticleInCart((Cart)session.getAttribute("existing_cart"), name, newQuantity);
+        cartService.editQuantityOfArticleInCart((Cart) session.getAttribute("existing_cart"), name, newQuantity);
         return "redirect:/cart";
     }
 
     @PostMapping("/delete_article")
-    public String deleteGivenArticle(@RequestParam("deleted_article") String name, HttpServletRequest request){
+    public String deleteGivenArticle(@RequestParam("deleted_article") String name, HttpServletRequest request) {
         HttpSession session = getHttpSession(request);
-        cartService.deleteArticle((Cart)session.getAttribute("existing_cart"), name);
+        cartService.deleteArticle((Cart) session.getAttribute("existing_cart"), name);
         return "redirect:/cart";
     }
 

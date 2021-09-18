@@ -21,7 +21,7 @@ public class CartService {
         return cartRepository.createCart();
     }
 
-    public ArrayList<Cart.Article> getAllArticlesFromCart(Cart cart){
+    public ArrayList<Cart.Article> getAllArticlesFromCart(Cart cart) {
         return cartRepository.articles(cart);
     }
 
